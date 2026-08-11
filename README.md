@@ -11,7 +11,8 @@ python main.py
 ## 1. 📖 프로젝트 개요
 
 개발 목적: 다양한 GenAI 도구를 사용하며 흩어진 프롬프트를 체계적으로 정리하고 다룰 수 있는 나만의 프롬프트 집(House)을 구축합니다.
-학습 목표: 
+
+* 학습 목표: 
   - 파이썬(Python)의 기본 데이터 구조(List, Dictionary), 제어문(if, while), 함수 분리를 활용해 동작하는 콘솔 프로그램을 구현합니다.
   - Git을 통해 기능 단위 커밋, 브랜치 관리(`checkout`, `merge`) 및 GitHub 버전 관리 워크플로우를 체계적으로 적용합니다.
 
@@ -19,10 +20,10 @@ python main.py
 
 ## 2. ⚙️ 개발 환경 (Environment)
 
-OS: [ Windows / macOS ]
-Editor: Visual Studio Code (Python Extension, Korean Language Pack)
-Language: Python 3.10+ (외부 라이브러리 없는 파이썬 표준 라이브러리 기반)
-Version Control: Git & GitHub
+- OS: [ Windows / macOS ]
+- Editor: Visual Studio Code (Python Extension, Korean Language Pack)
+- Language: Python 3.10+ (외부 라이브러리 없는 파이썬 표준 라이브러리 기반)
+- Version Control: Git & GitHub
 
 ---
 
@@ -74,8 +75,6 @@ cd [저장소-이름]
 # 3. 프로그램 실행
 python main.py
 
----
-
 ## 6. Git / GitHub 버전 관리 이력
 과제 제약 사항에 맞춰 Git 버전 관리를 충실히 적용하였습니다.
 
@@ -84,8 +83,6 @@ python main.py
 브랜치 활용: feature/list-view (또는 해당 기능 브랜치) 별도 생성 후 작업 수행 ➔ main 브랜치로 merge 수행
 
 Git 명령어 사용 이력: init, add, commit, push, pull, checkout, clone, merge 명령어 1회 이상 필수 실행 및 이력 보유
-
----
 
 ## 7. 🎯 보너스 과제 구현 여부 (선택)
 [ ] 보너스 1: JSON 파일 데이터 저장/불러오기(영속화) 및 Markdown 파일 내보내기
