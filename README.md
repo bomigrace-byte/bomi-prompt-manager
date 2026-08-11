@@ -93,3 +93,60 @@ Git 명령어 사용 이력: init, add, commit, push, pull, checkout, clone, mer
 [ ] 보너스 2: 프롬프트 수정/삭제(CRUD) 및 상세 보기 조회수 집계/정렬 기능
 
 (※ 보너스 과제를 구현하지 않은 경우 "해당 없음" 처리)
+
+---
+### 최종 제출물
+
+**1.개발환경 설정 스크린샷**
+
+<img width="429" height="151" alt="개발환경 설정 스크린샷" src="https://github.com/user-attachments/assets/36c4f2f8-993c-4199-a24d-3170b157448a" />
+
+
+**2.프로그램 실행 결과 스크린샷**
+
+1)프롬프트 추가
+
+<img width="374" height="288" alt="1  프롬프트 추가" src="https://github.com/user-attachments/assets/db345dc3-1527-406b-a783-00ddefab691c" />
+
+2) 프롬프트 목록
+
+<img width="279" height="327" alt="2  프롬프트 목록" src="https://github.com/user-attachments/assets/570a1d50-0420-487d-a237-3991c044d054" />
+
+
+3) 카테고리별 조회
+
+<img width="240" height="463" alt="3  카테고리별 조회" src="https://github.com/user-attachments/assets/d92fd051-2b75-4de8-bd53-e6f36ce509b1" />
+
+
+4) 프롬프트 검색
+
+<img width="278" height="330" alt="4  프롬프트 검색" src="https://github.com/user-attachments/assets/05b281f5-3a5e-4366-8051-c6dd26452bf7" />
+
+
+5) 프롬프트 상세보기
+
+<img width="271" height="429" alt="5  프롬프트 상세보기" src="https://github.com/user-attachments/assets/a0eb88dd-f015-4294-9565-4adb4fd977af" />
+
+
+6) 즐겨찾기 관리
+
+<img width="277" height="432" alt="6  즐겨찾기 관리" src="https://github.com/user-attachments/assets/075988a9-7d37-4dd1-a053-fd3dbdb51954" />
+
+
+7) 즐겨찾기 목록
+
+<img width="269" height="282" alt="7  즐겨찾기 목록" src="https://github.com/user-attachments/assets/17503872-1ab3-41f9-9b77-a551c5273567" />
+
+
+8) 종료
+
+<img width="288" height="227" alt="0  종료" src="https://github.com/user-attachments/assets/d8418893-a3a2-46ce-8b9d-647797d5dd33" />
+
+
+**3.git log 그래프 스크린샷**
+
+<img width="622" height="603" alt="git log --oneline --graph" src="https://github.com/user-attachments/assets/70ac3a69-0c8c-4009-a675-bf9b734fd274" />
+
+**4.github 저장소 url**
+
+[https://github.com/bomigrace-byte/bomi-prompt-manager]
