@@ -101,6 +101,61 @@ Git 명령어 사용 이력: init, add, commit, push, pull, checkout, clone, mer
 
 <img width="429" height="151" alt="개발환경 설정 스크린샷" src="https://github.com/user-attachments/assets/36c4f2f8-993c-4199-a24d-3170b157448a" />
 
+1) python --version
+
+<img width="429" height="32" alt="python --version" src="https://github.com/user-attachments/assets/9fd4c8fa-7894-49e4-bd31-cee356367ef2" />
+
+2) git --version
+
+<img width="429" height="35" alt="git --version" src="https://github.com/user-attachments/assets/a77af660-485e-47d7-97e8-a6c341b498bc" />
+
+3) git config user.name
+
+<img width="429" height="35" alt="User name" src="https://github.com/user-attachments/assets/24803e19-f2ba-4b75-a2ea-1f702d3ab7a9" />
+
+4) git config user.email
+
+<img width="429" height="51" alt="user email" src="https://github.com/user-attachments/assets/a0aa8885-2553-4adb-9121-da445ddfe75d" />
+
+**⚠️1-1 중복 제목 발생 시 행동 규칙 (Policy)**
+프롬프트 관리 프로그램의 데이터 일관성과 고유성을 위해 **중복 제목 등록을 엄격히 거부(차단)**합니다.
+
+  **동작 규칙**:
+  1. 새 프롬프트 추가(`add_prompt`) 시, 입력받은 제목이 기존 프롬프트 목록에 이미 존재하는지 사전 검사합니다.
+  2. **중복 제목 발견 시**: 
+     - `"이미 존재하는 프롬프트 제목입니다. 다른 제목을 입력해 주세요."` 안내 메시지를 출력합니다.
+     - 기존 데이터를 덮어쓰지 않고, 등록 절차를 중단하거나 올바른 제목을 재입력받도록 차단합니다.
+  **이유**: 동일한 제목이 존재할 경우 프롬프트 단건 조회, 수정, 삭제 시 식별 충돌이 발생할 수 있으므로 제목의 고유성(Unique Key)을 보장합니다.
+
+**⚠️1-1 중복 제목 발생 시 스크린샷**
+
+<img width="675" height="311" alt="중복방지" src="https://github.com/user-attachments/assets/5db11b77-093c-41dc-b237-41ba8e53f4ea" />
+
+
+**1-3 충돌 발생 시 권장 해결 순서(원인 확인→수정→테스트)**
+## 🛠️ 병합 충돌(Merge Conflict) 해결 가이드
+
+본 프로젝트 개발 과정에서 발생할 수 있는 병합 충돌에 대한 원인 분석 및 해결 권장 절차는 다음과 같습니다.
+
+### 1. 충돌 발생 원인
+* 동일한 파일(`main.py`)의 동일한 코드 라인을 서로 다른 브랜치에서 동시에 수정 후 병합을 시도할 때 발생합니다.
+
+### 2. 권장 해결 순서 (원인 확인 ➔ 수정 ➔ 테스트)
+
+1. **원인 및 파일 확인**
+   * 터미널에서 `git status`를 입력하여 충돌이 발생한 파일(`Unmerged paths`)을 확인합니다.
+   * 해당 파일(`main.py`)을 열어 `<<<<<<<`, `=======`, `>>>>>>>` 표시가 위치한 충돌 구간을 파악합니다.
+
+2. **충돌 코드 수정**
+   * 프로젝트 요구사항에 맞는 올바른 코드(최신 중복 처리 로직)만 남겨두고, Git 충돌 표시 기호(`<<<`, `===`, `>>>`)를 모두 제거합니다.
+   * `git add main.py`를 통해 수정된 파일의 충돌 해결 상태를 스테이징합니다.
+   * `git commit`을 실행하여 충돌 해결 커밋을 완료합니다.
+
+3. **검증 및 테스트**
+   * `python main.py`를 실행하여 프로그램이 정상적으로 동작하는지 테스트합니다.
+   * 중복 제목 입력 시 예외 처리 로직이 의도대로 동작하는지 확인합니다.
+   * 이상이 없을 경우 `git push origin main`을 실행하여 원격 저장소에 최종 반영합니다.
+
 
 **2.프로그램 실행 결과 스크린샷**
 
@@ -150,3 +205,85 @@ Git 명령어 사용 이력: init, add, commit, push, pull, checkout, clone, mer
 **4.github 저장소 url**
 
 [https://github.com/bomigrace-byte/bomi-prompt-manager]
+
+**4.레포지토리 클론 실행
+1) 스크린샷
+
+<img width="727" height="518" alt="클론" src="https://github.com/user-attachments/assets/f23c9255-8e75-48e9-84ae-e9df1bf3c1e1" />
+
+2) 터미널 로그
+
+PS C:\Users\user\bomi-prompt-manager> cd ~/Desktop
+PS C:\Users\user\Desktop> git clone https://github.com/bomigrace-byte/bomi-prompt-manager.git
+Cloning into 'bomi-prompt-manager'...
+remote: Enumerating objects: 74, done.
+remote: Counting objects: 100% (74/74), done.
+remote: Compressing objects: 100% (59/59), done.
+remote: Total 74 (delta 37), reused 41 (delta 14), pack-reused 0 (from 0)
+Receiving objects: 100% (74/74), 19.71 KiB | 4.93 MiB/s, done.
+Resolving deltas: 100% (37/37), done.
+PS C:\Users\user\Desktop> cd bomi-prompt-manager
+PS C:\Users\user\Desktop\bomi-prompt-manager> dir   
+
+
+    디렉터리: C:\Users\user\Desktop\bomi-prompt-manager
+
+
+Mode                 LastWriteTime         Length Name                                                                                                                                             
+----                 -------------         ------ ----                                                                                                                                             
+-a----      2026-08-11   오후 9:51             78 .gitignore                                                                                                                                       
+-a----      2026-08-11   오후 9:51           8997 main.py                                                                                                                                          
+-a----      2026-08-11   오후 9:51           6256 README.md                                                                                                                                        
+-a----      2026-08-11   오후 9:51             16 test.py
+
+**5.브랜치 생성/checkout 및 merge 실행
+1) 스크린샷
+
+<img width="902" height="649" alt="브랜치 생성,checkout 및 merge 실행" src="https://github.com/user-attachments/assets/14273e59-ba38-4dd4-bde7-e8d3f982dc5f" />
+
+2) 터미널 로그
+
+- 브랜치 생성
+
+PS C:\Users\user\Desktop\bomi-prompt-manager> git checkout -b feature/test-branch
+Switched to a new branch 'feature/test-branch'
+   
+- Merge
+
+PS C:\Users\user\Desktop\bomi-prompt-manager> git commit --allow-empty -m "feat: 브랜치 병합 증거 작성을 위한 커밋"
+[feature/test-branch d03890e] feat: 브랜치 병합 증거 작성을 위한 커밋
+PS C:\Users\user\Desktop\bomi-prompt-manager> git checkout main
+Switched to branch 'main'
+Your branch is up to date with 'origin/main'.
+PS C:\Users\user\Desktop\bomi-prompt-manager> git merge --no-ff feature/test-branch -m "merge: feature/test-branch 브랜치 병합"
+Merge made by the 'ort' strategy.
+PS C:\Users\user\Desktop\bomi-prompt-manager> git branch -a
+  feature/test-branch
+* main
+  remotes/origin/HEAD -> origin/main
+  remotes/origin/main
+PS C:\Users\user\Desktop\bomi-prompt-manager> git log --oneline --graph -n 10
+*   29b94c0 (HEAD -> main) merge: feature/test-branch 브랜치 병합
+|\  
+| * d03890e (feature/test-branch) feat: 브랜치 병합 증거 작성을 위한 커밋
+|/  
+* a9ab57b (origin/main, origin/HEAD) Update README with final submission details
+* e855b6a main.py 수정
+* cc3cd05 docs: README 마크다운 포맷 수정
+* 546d655 docs: README 마크다운 포맷 수정
+* 92a53c1 docs: README 표 마크다운 포맷 수정
+* 4bcfb2e docs: README.md 작성 및 프로젝트 설명 추가
+*   05c2c7f Merge branch 'main' of https://github.com/bomigrace-byte/bomi-prompt-manager
+|\  
+| * e780fa0 Update README.md
+PS C:\Users\user\Desktop\bomi-prompt-manager> git push origin main
+Enumerating objects: 2, done.
+Counting objects: 100% (2/2), done.
+Delta compression using up to 24 threads
+Compressing objects: 100% (2/2), done.
+Writing objects: 100% (2/2), 350 bytes | 350.00 KiB/s, done.
+Total 2 (delta 1), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (1/1), done.
+To https://github.com/bomigrace-byte/bomi-prompt-manager.git
+   a9ab57b..29b94c0  main -> main
+
