@@ -11,8 +11,8 @@ python main.py
 
 ## 1. 📖 프로젝트 개요
 
-* **개발 목적**: 다양한 GenAI 도구를 사용하며 흩어진 프롬프트를 체계적으로 정리하고 다룰 수 있는 나만의 프롬프트 집(House)을 구축합니다.
-* **학습 목표**: 
+**개발 목적**: 다양한 GenAI 도구를 사용하며 흩어진 프롬프트를 체계적으로 정리하고 다룰 수 있는 나만의 프롬프트 집(House)을 구축합니다.
+**학습 목표**: 
   - 파이썬(Python)의 기본 데이터 구조(List, Dictionary), 제어문(if, while), 함수 분리를 활용해 동작하는 콘솔 프로그램을 구현합니다.
   - Git을 통해 기능 단위 커밋, 브랜치 관리(`checkout`, `merge`) 및 GitHub 버전 관리 워크플로우를 체계적으로 적용합니다.
 
@@ -20,10 +20,10 @@ python main.py
 
 ## 2. ⚙️ 개발 환경 (Environment)
 
-* **OS**: [ Windows / macOS ]
-* **Editor**: Visual Studio Code (Python Extension, Korean Language Pack)
-* **Language**: Python 3.10+ (외부 라이브러리 없는 파이썬 표준 라이브러리 기반)
-* **Version Control**: Git & GitHub
+**OS**: [ Windows / macOS ]
+**Editor**: Visual Studio Code (Python Extension, Korean Language Pack)
+**Language**: Python 3.10+ (외부 라이브러리 없는 파이썬 표준 라이브러리 기반)
+**Version Control**: Git & GitHub
 
 ---
 
@@ -42,7 +42,7 @@ python main.py
 | **6** | **즐겨찾기 관리** | 특정 프롬프트의 즐겨찾기 상태 토글(ON/OFF) (`toggle_favorite()`) |
 | **7** | **즐겨찾기 목록** | 즐겨찾기 등록된 프롬프트만 모아보기 (`show_favorites()`) |
 
-* **기본 탑재 데이터**: 프로그램 시작 시 최소 3개 이상의 프롬프트 기본 제공
+**기본 탑재 데이터**: 프로그램 시작 시 최소 3개 이상의 프롬프트 기본 제공
 
 ---
 
