@@ -273,9 +273,7 @@ Resolving deltas: 100% (37/37), done.
 PS C:\Users\user\Desktop> cd bomi-prompt-manager
 PS C:\Users\user\Desktop\bomi-prompt-manager> dir   
 
-
-    디렉터리: C:\Users\user\Desktop\bomi-prompt-manager
-
+디렉터리: C:\Users\user\Desktop\bomi-prompt-manager
 
 Mode                 LastWriteTime         Length Name                                                                                                                                             
 ----                 -------------         ------ ----                                                                                                                                             
@@ -283,6 +281,7 @@ Mode                 LastWriteTime         Length Name
 -a----      2026-08-11   오후 9:51           8997 main.py                                                                                                                                          
 -a----      2026-08-11   오후 9:51           6256 README.md                                                                                                                                        
 -a----      2026-08-11   오후 9:51             16 test.py
+
 
 **5.브랜치 생성/checkout 및 merge 실행
 1) 스크린샷
