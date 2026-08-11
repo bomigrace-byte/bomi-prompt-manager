@@ -118,7 +118,7 @@ Git 명령어 사용 이력: init, add, commit, push, pull, checkout, clone, mer
 <img width="429" height="51" alt="user email" src="https://github.com/user-attachments/assets/a0aa8885-2553-4adb-9121-da445ddfe75d" />
 
 
-**⚠️1-1 중복 제목 발생 시 행동 규칙 (Policy)**
+### ⚠️중복 제목 발생 시 행동 규칙 (Policy)
 프롬프트 관리 프로그램의 데이터 일관성과 고유성을 위해 **중복 제목 등록을 엄격히 거부(차단)**합니다.
 
   **동작 규칙**:
@@ -129,12 +129,12 @@ Git 명령어 사용 이력: init, add, commit, push, pull, checkout, clone, mer
   **이유**: 동일한 제목이 존재할 경우 프롬프트 단건 조회, 수정, 삭제 시 식별 충돌이 발생할 수 있으므로 제목의 고유성(Unique Key)을 보장합니다.
 
 
-**⚠️1-2 중복 제목 발생 시 스크린샷**
+**중복 제목 발생 시 스크린샷**
 
 <img width="675" height="311" alt="중복방지" src="https://github.com/user-attachments/assets/5db11b77-093c-41dc-b237-41ba8e53f4ea" />
 
 
-# 🛡️ 사용자 입력 검증 및 예외 처리 정책 (Validation Policy)
+### 🛡️ 사용자 입력 검증 및 예외 처리 정책 (Validation Policy)
 
 프로그램 실행 중 발생할 수 있는 올바르지 않은 사용자 입력을 제어하고, 프로그램이 비정상 종료(Crash)되지 않도록 다음과 같은 입력 예외 처리 규칙을 일괄 적용했습니다.
 
@@ -160,7 +160,8 @@ Git 명령어 사용 이력: init, add, commit, push, pull, checkout, clone, mer
    * **형변환 예외 처리**: 숫자가 아닌 문자가 입력될 경우 `ValueError` 예외를 캡처하거나 `.isdigit()`으로 검증하여 에러 없이 안내 메시지를 보여줍니다.
 
 
-**1-3 충돌 발생 시 권장 해결 순서(원인 확인→수정→테스트)
+
+### 1-3 충돌 발생 시 권장 해결 순서(원인 확인→수정→테스트)
 # 🛠️ 병합 충돌(Merge Conflict) 해결 가이드
 
 본 프로젝트 개발 과정에서 발생할 수 있는 병합 충돌에 대한 원인 분석 및 해결 권장 절차는 다음과 같습니다.
@@ -184,7 +185,8 @@ Git 명령어 사용 이력: init, add, commit, push, pull, checkout, clone, mer
    * 중복 제목 입력 시 예외 처리 로직이 의도대로 동작하는지 확인합니다.
    * 이상이 없을 경우 `git push origin main`을 실행하여 원격 저장소에 최종 반영합니다.
   
-**1-4 카테고리 변경(수정) 기능 구현**
+
+### 카테고리 변경(수정) 기능 구현
 # ✏️ 카테고리 및 프롬프트 수정(편집) 가이드
 
 프로그램 내에서 이미 등록된 프롬프트의 카테고리, 제목, 내용을 수정하는 방법과 관련 코드 위치 안내입니다.
