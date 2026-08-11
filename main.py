@@ -2,7 +2,6 @@
 # 나만의 프롬프트 관리 프로그램
 # =============================================
 
-# 📌 기본 데이터 (이전 미션 프롬프트 3개 이상 등록)
 prompts = [
     {
         "title": "블로그 글 작성 도우미",
@@ -54,21 +53,32 @@ def add_prompt():
     """프롬프트 추가 함수"""
     print("\n=== 프롬프트 추가 ===")
     while True:
-        title = input("제목: ").strip()
-        if title: break
+        title = input("제목 (0: 이전으로): ").strip()
+        if title == "0":
+            print("이전 메뉴로 돌아갑니다.")
+            return  # ⭐ 이전으로 복귀
+        if title:
+            break
         print("제목을 입력해주세요!")
         
     while True:
-        content = input("내용: ").strip()
-        if content: break
+        content = input("내용 (0: 이전으로): ").strip()
+        if content == "0":
+            print("이전 메뉴로 돌아갑니다.")
+            return  # ⭐ 이전으로 복귀
+        if content:
+            break
         print("내용을 입력해주세요!")
         
-    print("\n카테고리 선택:")
+    print("\n카테고리 선택 (0: 이전으로):")
     for i, cat in enumerate(CATEGORIES, 1):
         print(f"{i}) {cat}")
         
     while True:
         choice = input("선택: ").strip()
+        if choice == "0":
+            print("이전 메뉴로 돌아갑니다.")
+            return  # ⭐ 이전으로 복귀
         if choice.isdigit() and 1 <= int(choice) <= len(CATEGORIES):
             category = CATEGORIES[int(choice) - 1]
             break
@@ -100,8 +110,13 @@ def show_by_category():
     print("\n=== 카테고리별 조회 ===")
     for i, cat in enumerate(CATEGORIES, 1):
         print(f"{i}) {cat}")
+    print("0) 이전으로")  # ⭐ 추가
+    
     while True:
         choice = input("선택: ").strip()
+        if choice == "0":
+            print("이전 메뉴로 돌아갑니다.")
+            return  # ⭐ 이전으로 복귀
         if choice.isdigit() and 1 <= int(choice) <= len(CATEGORIES):
             selected = CATEGORIES[int(choice) - 1]
             break
@@ -121,7 +136,10 @@ def show_by_category():
 def search_prompt():
     """검색 함수"""
     print("\n=== 프롬프트 검색 ===")
-    keyword = input("검색어: ").strip()
+    keyword = input("검색어 (0: 이전으로): ").strip()
+    if keyword == "0":
+        print("이전 메뉴로 돌아갑니다.")
+        return  # ⭐ 이전으로 복귀
     if not keyword:
         print("검색어를 입력해주세요!")
         return
@@ -142,8 +160,14 @@ def show_detail():
     if not prompts:
         print("등록된 프롬프트가 없습니다.")
         return
+    show_list()  # 목록 먼저 표시
+    print("0) 이전으로")  # ⭐ 추가
+    
     try:
-        num = int(input("번호 입력: "))
+        num = int(input("\n번호 입력: "))
+        if num == 0:
+            print("이전 메뉴로 돌아갑니다.")
+            return  # ⭐ 이전으로 복귀
         if 1 <= num <= len(prompts):
             prompt = prompts[num - 1]
             star = "⭐" if prompt["favorite"] else "없음"
@@ -161,17 +185,22 @@ def show_detail():
 
 
 def manage_favorite():
-    """즐겨찾기 추가/해제 함수 (추가됨)"""
+    """즐겨찾기 추가/해제 함수"""
     print("\n=== 즐겨찾기 관리 ===")
     if not prompts:
         print("등록된 프롬프트가 없습니다.")
         return
     show_list()
+    print("0) 이전으로")  # ⭐ 추가
+    
     try:
         num = int(input("\n프롬프트 번호 입력: "))
+        if num == 0:
+            print("이전 메뉴로 돌아갑니다.")
+            return  # ⭐ 이전으로 복귀
         if 1 <= num <= len(prompts):
             prompt = prompts[num - 1]
-            prompt["favorite"] = not prompt["favorite"]  # True <-> False 토글
+            prompt["favorite"] = not prompt["favorite"]
             status = "추가" if prompt["favorite"] else "해제"
             print(f"'{prompt['title']}' 프롬프트를 즐겨찾기에 {status}했습니다!")
         else:
@@ -181,7 +210,7 @@ def manage_favorite():
 
 
 def show_favorites():
-    """즐겨찾기 목록 보기 함수 (추가됨)"""
+    """즐겨찾기 목록 함수"""
     print("\n=== 즐겨찾기 목록 ===")
     result = [p for p in prompts if p["favorite"]]
     if not result:
@@ -192,15 +221,11 @@ def show_favorites():
     print(f"\n총 {len(result)}개의 즐겨찾기")
 
 
-# =============================================
-# 메인 실행 루프 (추가됨)
-# =============================================
-
 def main():
-    print("프롬프트 관리 프로그램을 시작합니다!")
+    """메인 함수 - 무한 루프로 메뉴 반복"""
     while True:
         show_menu()
-        choice = input("선택: ").strip()
+        choice = input("\n선택: ").strip()
         
         if choice == "1":
             add_prompt()
@@ -217,10 +242,10 @@ def main():
         elif choice == "7":
             show_favorites()
         elif choice == "0":
-            print("프로그램을 종료합니다. 안녕히 가세요! 👋")
-            break
+            print("\n프로그램을 종료합니다. 안녕히가세요! 👋")
+            break  # ⭐ 프로그램 완전 종료
         else:
-            print("⚠️ 올바른 번호를 입력해주세요!")
+            print("올바른 번호를 입력해주세요!")
 
 
 if __name__ == "__main__":
