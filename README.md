@@ -133,6 +133,7 @@ Git 명령어 사용 이력: init, add, commit, push, pull, checkout, clone, mer
 
 <img width="675" height="311" alt="중복방지" src="https://github.com/user-attachments/assets/5db11b77-093c-41dc-b237-41ba8e53f4ea" />
 
+---
 
 ### 🛡️ 사용자 입력 검증 및 예외 처리 정책 (Validation Policy)
 
@@ -159,10 +160,9 @@ Git 명령어 사용 이력: init, add, commit, push, pull, checkout, clone, mer
    * **상세보기/수정/즐겨찾기 번호 선택**: 현재 등록된 전체 프롬프트 개수(`len(prompts)`) 범위를 초과하는 숫자가 입력되면 경고 메시지를 출력합니다.
    * **형변환 예외 처리**: 숫자가 아닌 문자가 입력될 경우 `ValueError` 예외를 캡처하거나 `.isdigit()`으로 검증하여 에러 없이 안내 메시지를 보여줍니다.
 
+---
 
-
-### 🛠️ 충돌 발생 시 권장 해결 순서(원인 확인→수정→테스트)
-
+**🛠️ 충돌 발생 시 권장 해결 순서(원인 확인→수정→테스트)**
 # 병합 충돌(Merge Conflict) 해결 가이드
 
 본 프로젝트 개발 과정에서 발생할 수 있는 병합 충돌에 대한 원인 분석 및 해결 권장 절차는 다음과 같습니다.
