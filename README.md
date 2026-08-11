@@ -255,32 +255,9 @@ Git 명령어 사용 이력: init, add, commit, push, pull, checkout, clone, mer
 [https://github.com/bomigrace-byte/bomi-prompt-manager]
 
 **4.레포지토리 클론 실행
-1) 스크린샷
+스크린샷
 
 <img width="727" height="518" alt="클론" src="https://github.com/user-attachments/assets/f23c9255-8e75-48e9-84ae-e9df1bf3c1e1" />
-
-2) 터미널 로그
-
-PS C:\Users\user\bomi-prompt-manager> cd ~/Desktop
-PS C:\Users\user\Desktop> git clone https://github.com/bomigrace-byte/bomi-prompt-manager.git
-Cloning into 'bomi-prompt-manager'...
-remote: Enumerating objects: 74, done.
-remote: Counting objects: 100% (74/74), done.
-remote: Compressing objects: 100% (59/59), done.
-remote: Total 74 (delta 37), reused 41 (delta 14), pack-reused 0 (from 0)
-Receiving objects: 100% (74/74), 19.71 KiB | 4.93 MiB/s, done.
-Resolving deltas: 100% (37/37), done.
-PS C:\Users\user\Desktop> cd bomi-prompt-manager
-PS C:\Users\user\Desktop\bomi-prompt-manager> dir   
-
-디렉터리: C:\Users\user\Desktop\bomi-prompt-manager
-
-Mode                 LastWriteTime         Length Name                                                                                                                                             
-----                 -------------         ------ ----                                                                                                                                             
--a----      2026-08-11   오후 9:51             78 .gitignore                                                                                                                                       
--a----      2026-08-11   오후 9:51           8997 main.py                                                                                                                                          
--a----      2026-08-11   오후 9:51           6256 README.md                                                                                                                                        
--a----      2026-08-11   오후 9:51             16 test.py
 
 
 **5.브랜치 생성/checkout 및 merge 실행
