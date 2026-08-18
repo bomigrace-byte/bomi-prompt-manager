@@ -47,6 +47,7 @@ def show_menu():
     print("6. 즐겨찾기 관리")
     print("7. 즐겨찾기 목록")
     print("8. 프롬프트 수정 (카테고리/제목/내용)")
+    print("9. 프롬프트 삭제")  # 👈 추가
     print("0. 종료")
 
 
@@ -168,6 +169,33 @@ def edit_prompt():
 
     except ValueError:
         print("숫자를 입력해주세요!")
+
+
+def delete_prompt():
+    """프롬프트 삭제 함수"""
+    print("\n=== 프롬프트 삭제 ===")
+    if not prompts:
+        print("삭제할 프롬프트가 없습니다.")
+        return
+
+    show_list()
+    print("0) 이전으로")
+
+    try:
+        num = int(input("\n삭제할 프롬프트 번호 선택: "))
+        if num == 0:
+            print("이전 메뉴로 돌아갑니다.")
+            return
+
+        if 1 <= num <= len(prompts):
+            # pop()을 사용하여 선택한 번호(인덱스 = 번호 - 1)의 항목을 삭제 및 반환
+            removed = prompts.pop(num - 1)
+            print(f"\n✅ '{removed['title']}' 프롬프트가 삭제되었습니다.")
+        else:
+            print("올바른 번호를 입력해주세요!")
+
+    except ValueError:
+        print("숫자를 입력해주세요!")        
 
 
 def show_list():
@@ -320,6 +348,8 @@ def main():
             show_favorites()
         elif choice == "8":
             edit_prompt()
+        elif choice == "9":        # 👈 추가
+            delete_prompt()     # 👈 추가
         elif choice == "0":
             print("\n프로그램을 종료합니다. 안녕히가세요! 👋")
             break
