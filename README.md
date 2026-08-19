@@ -241,8 +241,12 @@ Git 명령어 사용 이력: init, add, commit, push, pull, checkout, clone, mer
 
 ## 8. 🎯 보너스 과제 구현 여부 (선택)
 
-- [ ]  보너스 1: JSON 파일 데이터 저장/불러오기(영속화) 및 Markdown 파일 내보내기
-- [ ]  보너스 2: 프롬프트 수정/삭제(CRUD) 및 상세 보기 조회수 집계/정렬 기능
+- [●]  보너스 1: JSON 파일 데이터 저장/불러오기(영속화) 및 Markdown 파일 내보내기
+- [●]  보너스 2: 프롬프트 수정/삭제(CRUD) 및 상세 보기 조회수 집계/정렬 기능
+
+<img width="243" height="252" alt="보너스 과제 추가" src="https://github.com/user-attachments/assets/1c0e044b-c48d-4af7-968d-a08b1d070977" />
+
+<img width="672" height="321" alt="파일내보내기 확인" src="https://github.com/user-attachments/assets/4ab94951-3c78-459a-b3d1-34648d7c7f02" />
 
 (※ 보너스 과제를 구현하지 않은 경우 "해당 없음" 처리)
 
