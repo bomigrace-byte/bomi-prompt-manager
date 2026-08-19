@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>나만의 프롬프트 관리자 — 발표 슬라이드</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #ffffff;
+    --ink: #0a0a0a;
+    --ink-soft: #2b2b2b;
+    --muted: #6b6b6b;
+    --line: #e6e6e6;
+    --line-strong: #cfcfcf;
+    --panel: #fafafa;
+    --accent: #111111;
+    --accent-soft: #f2f2f2;
+    --warn-bg: #fff7e6;
+    --warn-line: #f0d8a8;
+    --code-bg: #f6f6f6;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .deck {
+    width: 100%;
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+  }
+  .slide {
+    position: absolute;
+    inset: 0;
+    padding: 64px 80px 96px 80px;
+    display: none;
+    flex-direction: column;
+    background: var(--bg);
+    animation: fade .35s ease;
+  }
+  .slide.active { display: flex; }
+  @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+
+  /* Header */
+  .slide-header {
+    display: flex; align-items: center; gap: 14px;
+    font-size: 13px; color: var(--muted);
+    letter-spacing: 0.06em; text-transform: uppercase;
+    margin-bottom: 28px;
+  }
+  .slide-header .num {
+    font-family: 'JetBrains Mono', monospace;
+    background: var(--accent);
+    color: #fff;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-weight: 600;
+    letter-spacing: 0;
+  }
+  .slide-header .sep { width: 28px; height: 1px; background: var(--line-strong); }
+  .slide-header .tag { font-weight: 500; }
+
+  /* Title */
+  h1.slide-title {
+    font-size: 48px;
+    font-weight: 800;
+    line-height: 1.15;
+    margin: 0 0 18px 0;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  h2.slide-title {
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 0 0 22px 0;
+    letter-spacing: -0.015em;
+  }
+  .sub {
+    font-size: 18px;
+    color: var(--muted);
+    font-weight: 400;
+    line-height: 1.5;
+    max-width: 900px;
+  }
+
+  /* Cover */
+  .cover {
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 12vh;
+  }
+  .cover .badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 12px; color: var(--muted);
+    border: 1px solid var(--line-strong);
+    padding: 6px 12px; border-radius: 999px;
+    margin-bottom: 28px;
+    letter-spacing: 0.08em;
+  }
+  .cover .badge .dot { width: 6px; height: 6px; background: var(--ink); border-radius: 50%; }
+  .cover h1 {
+    font-size: 72px;
+    font-weight: 800;
+    line-height: 1.05;
+    margin: 0 0 22px 0;
+    letter-spacing: -0.03em;
+  }
+  .cover h1 .accent { color: var(--ink); position: relative; }
+  .cover h1 .accent::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; bottom: 6px;
+    height: 8px; background: var(--accent-soft);
+    z-index: -1;
+  }
+  .cover .lead {
+    font-size: 20px;
+    color: var(--ink-soft);
+    font-weight: 500;
+    margin-bottom: 48px;
+    line-height: 1.5;
+  }
+  .cover .meta {
+    display: flex; gap: 36px;
+    font-size: 13px; color: var(--muted);
+    border-top: 1px solid var(--line);
+    padding-top: 24px;
+    margin-top: 32px;
+  }
+  .cover .meta span b { display: block; color: var(--ink); font-weight: 600; margin-top: 2px; font-size: 14px; }
+
+  /* Content layout */
+  .content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    overflow: auto;
+  }
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 8px;
+  }
+  .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-top: 8px;
+  }
+  .grid-4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-top: 8px;
+  }
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 22px 22px;
+  }
+  .card .ic {
+    width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 8px;
+    margin-bottom: 14px;
+    font-size: 18px;
+    font-weight: 700;
+  }
+  .card h3 {
+    font-size: 16px; font-weight: 700; margin: 0 0 6px 0;
+  }
+  .card p { font-size: 13.5px; color: var(--ink-soft); margin: 0; line-height: 1.55; }
+
+  /* Bullets */
+  ul.bullets {
+    list-style: none;
+    padding: 0; margin: 14px 0 0 0;
+  }
+  ul.bullets li {
+    position: relative;
+    padding-left: 26px;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--ink-soft);
+    margin-bottom: 10px;
+  }
+  ul.bullets li::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 12px;
+    width: 12px; height: 2px;
+    background: var(--ink);
+  }
+  ul.bullets li b { color: var(--ink); font-weight: 600; }
+
+  /* Tables */
+  table.t {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 14px;
+    font-size: 14px;
+    background: var(--panel);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+  }
+  table.t th, table.t td {
+    text-align: left;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+  table.t th {
+    background: var(--accent);
+    color: #fff;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.02em;
+  }
+  table.t tr:last-child td { border-bottom: none; }
+  table.t td code, table.t th code {
+    font-family: 'JetBrains Mono', monospace;
+    background: var(--accent-soft);
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-size: 12.5px;
+  }
+
+  /* Code block */
+  pre.code {
+    background: var(--code-bg);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 18px 22px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: var(--ink);
+    line-height: 1.7;
+    overflow-x: auto;
+    margin-top: 12px;
+  }
+  pre.code .c { color: var(--muted); }
+  pre.code .k { color: var(--ink); font-weight: 600; }
+
+  /* TOC */
+  .toc {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px 28px;
+    margin-top: 24px;
+    max-width: 900px;
+  }
+  .toc .row {
+    display: flex; align-items: center; gap: 14px;
+    padding: 12px 4px;
+    border-bottom: 1px solid var(--line);
+  }
+  .toc .row .idx {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: var(--muted);
+    width: 28px;
+  }
+  .toc .row .lbl { font-size: 16px; font-weight: 500; }
+
+  /* Menu grid */
+  .menu-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-top: 14px;
+  }
+  .menu {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 16px 18px;
+    display: flex; align-items: flex-start; gap: 14px;
+  }
+  .menu .n {
+    font-family: 'JetBrains Mono', monospace;
+    background: var(--accent);
+    color: #fff;
+    width: 30px; height: 30px;
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .menu .m h4 { margin: 0 0 3px 0; font-size: 14.5px; font-weight: 700; }
+  .menu .m p { margin: 0; font-size: 12.5px; color: var(--muted); line-height: 1.5; }
+  .menu .m p code {
+    font-family: 'JetBrains Mono', monospace;
+    background: var(--accent-soft);
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-size: 11.5px;
+  }
+
+  /* Pill */
+  .pill {
+    display: inline-block;
+    background: var(--accent-soft);
+    color: var(--ink);
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 500;
+    margin-right: 6px;
+  }
+  .pill.dark {
+    background: var(--accent);
+    color: #fff;
+  }
+  .pill.warn {
+    background: var(--warn-bg);
+    color: #8a5a00;
+    border: 1px solid var(--warn-line);
+  }
+
+  /* Footer nav */
+  .nav {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    height: 64px;
+    background: #ffffff;
+    border-top: 1px solid var(--line);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 32px;
+    z-index: 100;
+  }
+  .nav .progress {
+    flex: 1;
+    margin: 0 24px;
+    height: 2px;
+    background: var(--line);
+    border-radius: 2px;
+    overflow: hidden;
+    position: relative;
+  }
+  .nav .progress .bar {
+    position: absolute; left: 0; top: 0; bottom: 0;
+    background: var(--accent);
+    transition: width .25s;
+  }
+  .nav button {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    width: 38px; height: 38px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .nav button:disabled { background: var(--line); cursor: not-allowed; }
+  .nav .page-info {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    min-width: 80px;
+    text-align: center;
+  }
+  .nav .title-mini {
+    font-size: 13px;
+    color: var(--muted);
+    min-width: 200px;
+  }
+
+  /* helpers */
+  .row-flex { display: flex; gap: 14px; align-items: center; }
+  .mt-8 { margin-top: 8px; }
+  .mt-16 { margin-top: 16px; }
+  .mt-24 { margin-top: 24px; }
+  .small { font-size: 13px; color: var(--muted); }
+
+  /* Icon-style glyph (line icon vibe using unicode) */
+  .ico {
+    display: inline-block;
+    width: 22px; height: 22px;
+    line-height: 22px;
+    text-align: center;
+    margin-right: 8px;
+    font-size: 18px;
+  }
+
+  /* End card */
+  .end {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding-top: 8vh;
+  }
+  .end h1 {
+    font-size: 64px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin: 0 0 16px 0;
+  }
+  .end p { font-size: 18px; color: var(--muted); margin: 8px 0; }
+  .end .gh {
+    margin-top: 28px;
+    font-family: 'JetBrains Mono', monospace;
+    background: var(--accent-soft);
+    padding: 10px 20px;
+    border-radius: 8px;
+    color: var(--ink);
+    font-size: 14px;
+  }
+
+  .checklist {
+    list-style: none;
+    padding: 0;
+    margin: 16px 0 0 0;
+  }
+  .checklist li {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 14px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    margin-bottom: 8px;
+    background: var(--panel);
+    font-size: 14.5px;
+  }
+  .checklist li .box {
+    width: 20px; height: 20px;
+    background: var(--accent);
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .flow {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-top: 14px;
+  }
+  .flow .step {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 14px 16px;
+    position: relative;
+  }
+  .flow .step .n {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .flow .step h5 {
+    margin: 4px 0 6px 0;
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .flow .step p {
+    margin: 0;
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+
+  .quote {
+    margin-top: 18px;
+    padding: 14px 18px;
+    background: var(--accent-soft);
+    border-left: 3px solid var(--accent);
+    border-radius: 6px;
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  .kb-hint {
+    position: fixed;
+    top: 16px; right: 16px;
+    font-size: 11px;
+    color: var(--muted);
+    background: #fff;
+    border: 1px solid var(--line);
+    padding: 6px 10px;
+    border-radius: 6px;
+    z-index: 101;
+  }
+</style>
+</head>
+<body>
+<div class="kb-hint">← → 키로 이동</div>
+
+<div class="deck" id="deck">
+
+  <!-- 1. 표지 -->
+  <section class="slide cover active">
+    <div class="badge"><span class="dot"></span> PYTHON CONSOLE PROJECT</div>
+    <h1>나만의 <span class="accent">프롬프트 관리자</span></h1>
+    <div class="lead">Prompt Manager — 파이썬 콘솔 기반 프롬프트 통합 관리 프로그램</div>
+    <div class="meta">
+      <span>PROJECT<b>프롬프트 매니저 (Prompt Manager)</b></span>
+      <span>GITHUB<b>github.com/bomigrace-byte/bomi-prompt-manager</b></span>
+      <span>LANGUAGE<b>Python 3.10+ (Standard Library)</b></span>
+    </div>
+  </section>
+
+  <!-- 2. 목차 -->
+  <section class="slide">
+    <div class="slide-header"><span class="num">02</span><span class="sep"></span><span class="tag">목차 / Contents</span></div>
+    <h2 class="slide-title">발표 구성</h2>
+    <div class="content">
+      <div class="toc">
+        <div class="row"><span class="idx">01</span><span class="lbl">프로젝트 개요</span></div>
+        <div class="row"><span class="idx">02</span><span class="lbl">개발 환경</span></div>
+        <div class="row"><span class="idx">03</span><span class="lbl">주요 기능 (8개 메뉴)</span></div>
+        <div class="row"><span class="idx">04</span><span class="lbl">설계 및 구현 — 자료구조 / 루프 / 영속화 / 수정</span></div>
+        <div class="row"><span class="idx">05</span><span class="lbl">입력 검증 정책</span></div>
+        <div class="row"><span class="idx">06</span><span class="lbl">실행 방법</span></div>
+        <div class="row"><span class="idx">07</span><span class="lbl">Git 버전 관리 &amp; 병합 충돌 가이드</span></div>
+        <div class="row"><span class="idx">08</span><span class="lbl">보너스 과제 &amp; 마무리</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. 프로젝트 개요 -->
+  <section class="slide">
+    <div class="slide-header"><span class="num">03</span><span class="sep"></span><span class="tag">1. 프로젝트 개요</span></div>
+    <h2 class="slide-title">왜 이 프로젝트를 만들었는가</h2>
+    <div class="content">
+      <div class="grid-2">
+        <div class="card">
+          <div class="ic">①</div>
+          <h3>개발 목적</h3>
+          <p>다양한 GenAI 도구를 사용하며 흩어진 프롬프트를 체계적으로 정리하고 다룰 수 있는 <b>나만의 프롬프트 집(House)</b>을 구축합니다.</p>
+        </div>
+        <div class="card">
+          <div class="ic">②</div>
+          <h3>학습 목표</h3>
+          <p>Python의 기본 데이터 구조(List, Dictionary), 제어문(if, while), 함수 분리를 활용해 동작하는 콘솔 프로그램을 구현하고, Git을 통한 기능 단위 커밋·브랜치 관리(checkout, merge)·GitHub 버전 관리 워크플로우를 체계적으로 적용합니다.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. 개발 환경 -->
+  <section class="slide">
+    <div class="slide-header"><span class="num">04</span><span class="sep"></span><span class="tag">2. 개발 환경 (Environment)</span></div>
+    <h2 class="slide-title">사용한 도구와 언어</h2>
+    <div class="content">
+      <div class="grid-4">
+        <div class="card"><div class="ic">OS</div><h3>OS</h3><p>Windows / macOS</p></div>
+        <div class="card"><div class="ic">ED</div><h3>Editor</h3><p>Visual Studio Code<br/>(Python Extension, Korean Language Pack)</p></div>
+        <div class="card"><div class="ic">PY</div><h3>Language</h3><p>Python 3.10+<br/>(외부 라이브러리 없는 표준 라이브러리 기반)</p></div>
+        <div class="card"><div class="ic">VC</div><h3>Version Control</h3><p>Git &amp; GitHub</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. 주요 기능 -->
+  <section class="slide">
+    <div class="slide-header"><span class="num">05</span><span class="sep"></span><span class="tag">3. 주요 기능 (Features)</span></div>
+    <h2 class="slide-title">8개 메뉴 + 기본 데이터 + 6개 카테고리</h2>
+    <div class="content">
+      <div class="menu-grid">
+        <div class="menu"><div class="n">0</div><div class="m"><h4>프로그램 종료</h4><p>루프를 종료하고 프로그램을 안전하게 마칩니다.</p></div></div>
+        <div class="menu"><div class="n">1</div><div class="m"><h4>프롬프트 추가</h4><p>제목·내용·카테고리 입력 → 신규 등록<br/><code>add_prompt()</code></p></div></div>
+        <div class="menu"><div class="n">2</div><div class="m"><h4>프롬프트 목록</h4><p>번호·카테고리·제목·즐겨찾기(⭐) 표출<br/><code>show_list()</code></p></div></div>
+        <div class="menu"><div class="n">3</div><div class="m"><h4>카테고리별 조회</h4><p>지정한 카테고리의 프롬프트만 필터링 출력<br/><code>show_by_category()</code></p></div></div>
+        <div class="menu"><div class="n">4</div><div class="m"><h4>프롬프트 검색</h4><p>키워드 입력으로 제목·내용 통합 검색<br/><code>search_prompt()</code></p></div></div>
+        <div class="menu"><div class="n">5</div><div class="m"><h4>상세 보기</h4><p>번호 선택 시 제목·카테고리·즐겨찾기·전체 본문 출력<br/><code>show_detail()</code></p></div></div>
+        <div class="menu"><div class="n">6</div><div class="m"><h4>즐겨찾기 관리</h4><p>특정 프롬프트의 즐겨찾기 상태 토글(ON/OFF)<br/><code>toggle_favorite()</code></p></div></div>
+        <div class="menu"><div class="n">7</div><div class="m"><h4>즐겨찾기 목록</h4><p>즐겨찾기 등록된 프롬프트만 모아보기<br/><code>show_favorites()</code></p></div></div>
+        <div class="menu"><div class="n">8</div><div class="m"><h4>프롬프트 수정</h4><p>등록된 프롬프트의 카테고리·제목·내용을 수정<br/><code>edit_prompt()</code></p></div></div>
+      </div>
+      <div class="quote">
+        <b>기본 탑재 데이터:</b> 프로그램 시작 시 <b>최소 3개 이상</b>의 프롬프트를 기본 제공합니다.<br/>
+        <b>등록 카테고리:</b> 1) 텍스트 생성 · 2) 이미지 생성 · 3) 영상 생성 · 4) 페르소나 · 5) 자동화 · 6) 기타
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. 자료구조 -->
+  <section class="slide">
+    <div class="slide-header"><span class="num">06</span><span class="sep"></span><span class="tag">4.1 자료구조 선택 — List vs Dictionary</span></div>
+    <h2 class="slide-title">List[Dict] 중첩 구조를 채택한 이유</h2>
+    <div class="content">
+      <table class="t">
+        <thead><tr><th style="width:14%">구분</th><th style="width:43%">리스트 (List)</th><th>딕셔너리 (Dictionary)</th></tr></thead>
+        <tbody>
+          <tr><td><b>특징</b></td><td>순서가 있는 데이터의 연속된 집합 (인덱스 기반)</td><td>키-값(Key-Value) 쌍으로 구성된 데이터 집합</td></tr>
+          <tr><td><b>장점</b></td><td>• 순서 보장 — 목록 출력·정렬에 유용<br/>• 인덱스(번호)로 순차 접근 용이<br/>• <code>append</code>·삭제 간편</td><td>• 키(Key) 탐색 속도 O(1)<br/>• 각 데이터의 의미(속성) 직관적 파악<br/>• 구조 확장 자유로움</td></tr>
+          <tr><td><b>단점</b></td><td>• 특정 값 찾으려면 전체 탐색 O(N)<br/>• 요소의 의미를 위치(인덱스)로만 구분</td><td>• 데이터 순서 보장되지 않음<br/>• Key 중복 허용하지 않음</td></tr>
+        </tbody>
+      </table>
+      <div class="grid-2 mt-16">
+        <div class="card">
+          <h3><span class="pill dark">전체</span> List 채택 이유</h3>
+          <p>사용자에게 프롬프트 목록을 <b>1번, 2번, 3번</b>과 같은 순번(인덱스)으로 나열해 보여주고 선택하게 하는 UI 흐름에 가장 적합합니다.</p>
+        </div>
+        <div class="card">
+          <h3><span class="pill dark">개별</span> Dictionary 채택 이유</h3>
+          <p>하나의 프롬프트가 가지는 여러 속성(title, content, category, favorite)을 Key-Value로 관리하여 <code>prompt["title"]</code> 형태로 <b>가독성과 명확성</b>을 확보했습니다.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. 무한 루프 -->
+  <section class="slide">
+    <div class="slide-header"><span class="num">07</span><span class="sep"></span><span class="tag">4.2 무한 루프(while True) 제어 구조</span></div>
+    <h2 class="slide-title">끝나지 않는 메뉴, 끊김 없는 사용자 경험</h2>
+    <div class="content">
+      <div class="card">
+        <h3>while True 채택 이유</h3>
+        <p>하나의 기능이 끝난 후 프로그램이 종료되지 않고 <b>다시 메인 메뉴로 돌아오는 연속적인 사용자 경험</b>을 제공하며, 잘못된 입력 시 프로그램 종료 없이 재입력을 유도합니다.</p>
+      </div>
+      <div class="grid-2 mt-16">
+        <div class="card">
+          <div class="ic">0</div>
+          <h3>메인 메뉴 종료 — <code>main()</code></h3>
+          <p><code>0</code> 입력 시 <b>break</b> 문을 실행해 while 루프를 탈출하고 프로그램을 정상 종료합니다.</p>
+        </div>
+        <div class="card">
+          <div class="ic">↩</div>
+          <h3>하위 메뉴 탈출 — <code>add_prompt()</code> 등</h3>
+          <p>입력값으로 <code>0</code>이 들어오면 <b>return</b> 문을 통해 즉시 <b>이전 메뉴로 복귀</b>합니다.</p>
+        </div>
+      </div>
+      <div class="quote">
+        💡 핵심: <b>메인은 <code>break</code></b>로 종료, <b>하위는 <code>return</code></b>으로 즉시 복귀 — 두 가지 종료 흐름을 명확히 분리했습니다.
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. 데이터 영속화 -->
+  <section class="slide">
+    <div class="slide-header"><span class="num">08</span><span class="sep"></span><span class="tag">4.3 데이터 영속화(Data Persistence)</span></div>
+    <h2 class="slide-title">파일 포맷 비교와 채택 — JSON</h2>
+    <div class="content">
+      <table class="t">
+        <thead><tr><th style="width:12%">포맷</th><th style="width:38%">장점</th><th style="width:30%">단점</th><th style="width:20%">본 프로젝트 적합성</th></tr></thead>
+        <tbody>
+          <tr><td><b>JSON</b></td><td>계층형·복합 구조(Dict, List)를 1:1 직렬화 가능 / <code>bool</code> 타입(즐겨찾기 여부) 보존 가능</td><td>데이터 용량이 텍스트에 비해 약간 큼</td><td><span class="pill dark">최적 (선택됨)</span></td></tr>
+          <tr><td><b>CSV</b></td><td>엑셀 등 표 형태 소프트웨어와 호환성 우수</td><td>내용(content) 내 줄바꿈·쉼표(,) 포함 시 파싱 오류 위험</td><td><span class="pill warn">미흡</span></td></tr>
+          <tr><td><b>TXT</b></td><td>가볍고 단순 텍스트 처리에 용이</td><td>구조화된 데이터(Key-Value) 파싱이 까다로움</td><td><span class="pill warn">미흡</span></td></tr>
+        </tbody>
+      </table>
+      <div class="grid-2 mt-16">
+        <div class="card">
+          <h3>📁 <code>prompts.json</code></h3>
+          <p>앱 시작 시 <code>load_prompts()</code>로 데이터를 로드하며, 추가·수정·삭제 등 변경 발생 시 <code>save_prompts()</code>를 통해 <b>자동 업데이트</b>합니다.</p>
+        </div>
+        <div class="card">
+          <h3>📝 <code>{title}.md</code></h3>
+          <p>특정 프롬프트를 <b>마크다운 표준 규격</b>(<code># Heading</code>, <code>&gt; Blockquote</code>)으로 변환하여 내보냅니다.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. 수정 가이드 -->
+  <section class="slide">
+    <div class="slide-header"><span class="num">09</span><span class="sep"></span><span class="tag">4.4 프롬프트 수정 가이드</span></div>
+    <h2 class="slide-title"><code>edit_prompt()</code> — 단계별 수정 흐름</h2>
+    <div class="content">
+      <div class="card">
+        <h3>담당 함수 / 위치</h3>
+        <p><code>edit_prompt()</code> · <code>main.py</code></p>
+      </div>
+      <div class="flow mt-16">
+        <div class="step"><span class="n">STEP 1</span><h5>수정할 프롬프트 선택</h5><p>목록에서 번호를 입력해 수정 대상을 지정합니다.</p></div>
+        <div class="step"><span class="n">STEP 2</span><h5>새 제목 입력</h5><p>Enter만 누르면 <b>기존 제목 유지</b> (Skip).</p></div>
+        <div class="step"><span class="n">STEP 3</span><h5>카테고리 재선택</h5><p>카테고리 목록에서 새 번호 선택. <b>Skip 가능</b>.</p></div>
+        <div class="step"><span class="n">STEP 4</span><h5>새 내용 입력 → 반영</h5><p>새 본문 입력 후 변경 사항이 즉시 반영됩니다.</p></div>
+      </div>
+      <div class="quote">
+        💡 Skip 동작은 사용자 부담을 줄이면서 <b>부분 수정</b>을 자연스럽게 지원합니다.
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. 입력 검증 정책 -->
+  <section class="slide">
+    <div class="slide-header"><span class="num">10</span><span class="sep"></span><span class="tag">5. 사용자 입력 검증 정책 (Validation Policy)</span></div>
+    <h2 class="slide-title">방어적 입력 처리 4종 세트</h2>
+    <div class="content">
+      <table class="t">
+        <thead><tr><th style="width:14%">구분</th><th style="width:32%">예외 상황</th><th>프로그램 행동 규칙 (Policy)</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><b>중복 제목</b></td>
+            <td>이미 존재하는 제목 입력</td>
+            <td>⚠️ <b>경고 메시지 출력 후 재입력 유도</b> (대소문자·공백 무시 비교)</td>
+          </tr>
+          <tr>
+            <td><b>빈값 처리</b></td>
+            <td>Enter만 입력하거나 공백(" ") 입력</td>
+            <td>⚠️ <b>"내용을 입력해주세요!"</b> 안내 문구 출력 후 재입력 유도 (<code>.strip()</code> 적용)</td>
+          </tr>
+          <tr>
+            <td><b>범위 초과</b></td>
+            <td>카테고리·목록 번호 선택 시 범위 벗어남</td>
+            <td>⚠️ <b>"올바른 번호를 입력해주세요!"</b> 경고 출력 후 재입력 유도</td>
+          </tr>
+          <tr>
+            <td><b>문자 입력</b></td>
+            <td>숫자 선택 항목에 문자·특수문자 입력</td>
+            <td>⚠️ <code>try-except (ValueError)</code> 또는 <code>.isdigit()</code> 검사로 차단 후 재입력 유도</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="quote">
+        💡 <b>중복 제목 거부 이유:</b> 동일한 제목이 존재하면 단건 조회·수정·삭제 기능 실행 중 <b>식별 충돌</b>이 발생할 수 있으므로 <b>고유성(Unique Key)</b>을 보장합니다.
+      </div>
+    </div>
+  </section>
+
+  <!-- 11. 실행 방법 -->
+  <section class="slide">
+    <div class="slide-header"><span class="num">11</span><span class="sep"></span><span class="tag">6. 실행 방법 (How to Run)</span></div>
+    <h2 class="slide-title">3단계로 끝내는 실행</h2>
+    <div class="content">
+      <div class="card">
+        <h3>STEP 1 — 원격 저장소 클론 (Clone)</h3>
+        <pre class="code"><span class="c"># 1. 원격 저장소 클론 (Clone)</span>
+<span class="k">git clone</span> https://github.com/bomigrace-byte/bomi-prompt-manager.git</pre>
+      </div>
+      <div class="card mt-16">
+        <h3>STEP 2 — 프로젝트 폴더로 이동</h3>
+        <pre class="code"><span class="c"># 2. 프로젝트 폴더로 이동</span>
+<span class="k">cd</span> bomi-prompt-manager</pre>
+      </div>
+      <div class="card mt-16">
+        <h3>STEP 3 — 프로그램 실행</h3>
+        <pre class="code"><span class="c"># 3. 프로그램 실행</span>
+<span class="k">python</span> main.py</pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12. Git -->
+  <section class="slide">
+    <div class="slide-header"><span class="num">12</span><span class="sep"></span><span class="tag">7. Git 버전 관리 &amp; 병합 충돌 가이드</span></div>
+    <h2 class="slide-title">체계적인 버전 관리와 충돌 해결</h2>
+    <div class="content">
+      <div class="grid-2">
+        <div class="card">
+          <h3>📋 Git 버전 관리 정책</h3>
+          <ul class="bullets">
+            <li>기능 단위로 나눈 <b>10개 이상의 커밋</b> 작성</li>
+            <li><code>feature/</code> 브랜치를 생성하여 작업 후 <b>main 브랜치로 merge</b></li>
+            <li>사용한 Git 명령어: <code>init</code>, <code>add</code>, <code>commit</code>, <code>push</code>, <code>pull</code>, <code>checkout</code>, <code>clone</code>, <code>merge</code></li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>🛠 병합 충돌(Merge Conflict) 해결 가이드</h3>
+          <p style="font-size:13px; color:var(--muted); margin-bottom:8px;"><b>충돌 발생 원인:</b> 동일 파일(<code>main.py</code>)의 동일 코드 라인을 서로 다른 브랜치에서 각각 수정 후 병합을 시도할 때 발생</p>
+          <ol style="padding-left:20px; margin:0; font-size:13.5px; line-height:1.7; color:var(--ink-soft);">
+            <li><code>git status</code>로 충돌 파일(<code>main.py</code>) 확인</li>
+            <li>파일 내 <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code>, <code>=======</code>, <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code> 충돌 표시 제거 및 최신 로직으로 코드 정리</li>
+            <li><code>git add main.py</code> → <code>git commit</code>으로 병합 완료</li>
+            <li><code>python main.py</code> 실행 및 테스트 후 <code>git push origin main</code> 반영</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 13. 마무리 -->
+  <section class="slide">
+    <div class="slide-header"><span class="num">13</span><span class="sep"></span><span class="tag">8. 보너스 과제 &amp; 마무리</span></div>
+    <h2 class="slide-title">보너스 과제 수행 완료</h2>
+    <div class="content">
+      <ul class="checklist">
+        <li><span class="box">✓</span> <b>보너스 1:</b> JSON 파일 데이터 저장·불러오기(영속화) 및 Markdown 파일 내보내기</li>
+        <li><span class="box">✓</span> <b>보너스 2:</b> 프롬프트 수정·삭제(CRUD) 기능</li>
+      </ul>
+      <div class="quote">
+        🎯 <b>핵심 학습 회고:</b> Python 표준 라이브러리만으로 CRUD·검색·즐겨찾기·파일 영속화를 직접 구현했고, Git 기능 단위 커밋과 feature/ 브랜치 머지를 통해 협업형 버전 관리 워크플로우를 실습했습니다.
+      </div>
+      <div class="end" style="margin-top:24px;">
+        <h1>경청해 주셔서 감사합니다</h1>
+        <p>Thank you for your attention.</p>
+        <div class="gh">github.com/bomigrace-byte/bomi-prompt-manager</div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<div class="nav">
+  <button id="prev" aria-label="이전">←</button>
+  <div class="title-mini" id="miniTitle">나만의 프롬프트 관리자</div>
+  <div class="progress"><div class="bar" id="bar"></div></div>
+  <div class="page-info"><span id="cur">1</span> / <span id="total">13</span></div>
+  <button id="next" aria-label="다음">→</button>
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  let i = 0;
+
+  const titles = [
+    '표지',
+    '목차',
+    '프로젝트 개요',
+    '개발 환경',
+    '주요 기능 (8개 메뉴)',
+    '자료구조 List vs Dictionary',
+    '무한 루프 제어 구조',
+    '데이터 영속화 JSON 채택',
+    '프롬프트 수정 가이드',
+    '입력 검증 정책',
+    '실행 방법',
+    'Git & 병합 충돌 가이드',
+    '보너스 과제 & 마무리'
+  ];
+
+  function render() {
+    slides.forEach((s, idx) => s.classList.toggle('active', idx === i));
+    document.getElementById('cur').textContent = i + 1;
+    document.getElementById('total').textContent = total;
+    document.getElementById('bar').style.width = ((i + 1) / total * 100) + '%';
+    document.getElementById('miniTitle').textContent = titles[i] || '';
+    document.getElementById('prev').disabled = i === 0;
+    document.getElementById('next').disabled = i === total - 1;
+  }
+
+  document.getElementById('prev').addEventListener('click', () => { if (i > 0) { i--; render(); } });
+  document.getElementById('next').addEventListener('click', () => { if (i < total - 1) { i++; render(); } });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') {
+      if (i < total - 1) { i++; render(); }
+      e.preventDefault();
+    } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+      if (i > 0) { i--; render(); }
+      e.preventDefault();
+    } else if (e.key === 'Home') {
+      i = 0; render();
+    } else if (e.key === 'End') {
+      i = total - 1; render();
+    } else if (/^[0-9]$/.test(e.key)) {
+      const n = parseInt(e.key, 10);
+      if (n >= 1 && n <= total) { i = n - 1; render(); }
+    }
+  });
+
+  render();
+</script>
+</body>
+</html>
