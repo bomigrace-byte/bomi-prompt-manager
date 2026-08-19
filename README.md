@@ -326,6 +326,8 @@ Git 명령어 사용 이력: init, add, commit, push, pull, checkout, clone, mer
 
 <img width="622" height="603" alt="git log --oneline --graph" src="https://github.com/user-attachments/assets/70ac3a69-0c8c-4009-a675-bf9b734fd274" />
 
+<img width="516" height="595" alt="스크린샷" src="https://github.com/user-attachments/assets/9489a383-f38f-422b-8e82-74f47ccb7404" />
+
 **4.github 저장소 url**
 
 [https://github.com/bomigrace-byte/bomi-prompt-manager]
